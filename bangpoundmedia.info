@@ -1,0 +1,4 @@
+name = !&# Media
+description = Provides media extensions
+core = 7.x
+php = 5.2.4

@@ -1,0 +1,115 @@
+<?php
+/**
+ * @file
+ * Code for the bangpoundmedia feature.
+ */
+
+/**
+ * Implementation of hook_module_implements_alter().
+ */
+function bangpoundmedia_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'media_token_to_markup_alter') {
+    $group = $implementations['bangpoundmedia'];
+    unset($implementations['bangpoundmedia']);
+    $implementations['bangpoundmedia'] = $group;
+  }
+}
+
+/**
+ * Implementation of hook_media_token_to_markup_alter().
+ */
+function bangpoundmedia_media_token_to_markup_alter(&$element, $tag_info, $settings) {
+  $file = $element['#file'];
+  $view_mode = $element['#view_mode'];
+
+  $new_element = file_view($file, $view_mode);
+
+  if (isset($element['#attributes'])) {
+    if (!isset($new_element['file']['#attributes'])) {
+      $new_element['file']['#attributes'] = array();
+    }
+    $new_element['file']['#attributes'] = array_merge_recursive($new_element['file']['#attributes'], $element['#attributes']);
+
+    if (!isset($new_element['#attributes'])) {
+      $new_element['#attributes'] = array();
+    }
+    $new_element['#attributes'] = array_merge_recursive($new_element['#attributes'], $element['#attributes']);
+
+    if (isset($element['#alt'])) {
+      $new_element['file']['#alt'] = $element['#alt'];
+    }
+  }
+
+  $element = $new_element;
+
+  $theme = $element['#theme'];
+
+  $element['#theme'] =  $theme .'__'. $view_mode;
+}
+
+/**
+ * Implementation of hook_entity_info_alter()
+ */
+function bangpoundmedia_entity_info_alter(&$entity_info) {
+
+  $entity_info['file']['view modes']['embed'] = array(
+    'label' => t('Embed'),
+    'custom settings' => TRUE,
+  );
+}
+
+function bangpoundmedia_theme($existing, $type, $theme, $path) {
+  return array(
+    'file_entity__embed' => array(
+      'render element' => 'elements',
+      'template' => 'file_entity--embed',
+
+      // For entity view mode themes.
+      'entity key' => '#file',
+      'override preprocess functions' => TRUE,
+      'override process functions' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implement hook_theme_registry_alter().
+ *
+ * There's no consistent way to find an entity in the theme stack. To avoid conflicts, all
+ * entity themes in the registry are annotated with the name of the entity's key in the
+ * render element array. The preprocess function is only added to specific theme entities.
+ *
+ * Currently all entities are themed with a render element instead of variables.
+ * field_attach_view() adds entity type and bundle info to the render elements.
+ */
+function bangpoundmedia_theme_registry_alter(&$theme_registry) {
+
+  // Copy node theme to file__embed.
+  $info = $theme_registry['file_entity'];
+
+  // Find key of last template function.
+  $offset = array_search('template_preprocess_file_entity', $info['preprocess functions']);
+  $functions = array_slice($info['preprocess functions'], 0, $offset + 1);
+  $functions[] = 'template_preprocess_file_entity__embed';
+  $theme_registry['file_entity__embed']['preprocess functions'] = array_merge($functions, array_slice($info['preprocess functions'], $offset + 1));
+
+  $theme_registry['file_entity__embed']['process functions'] = $info['process functions'];
+}
+
+function template_preprocess_file_entity__embed(&$variables, $hook) {
+  $elements = $variables['elements'];
+  $variables['attributes_array'] = array_merge($variables['attributes_array'], $elements['#attributes']);
+  if (isset($variables['attributes_array']['style'])) {
+    $variables['attributes_array']['style'] = preg_replace('|height: ?.+?\;|', '', $variables['attributes_array']['style']);
+  }
+  $variables['classes_array'] = array_merge($variables['classes_array'], array($elements['#attributes']['class']));
+}
+
+function bangpoundmedia_preprocess_file_entity(&$variables) {
+  $view_mode = $variables['view_mode'];
+  $file = $variables['file'];
+  if ($view_mode == 'embed') {
+    $variables['theme_hook_suggestion'] = 'file_entity__embed';
+    $variables['page'] = $view_mode == 'full' && file_is_page($file);
+  }
+}
