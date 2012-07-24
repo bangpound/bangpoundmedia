@@ -15,6 +15,17 @@ function bangpoundmedia_module_implements_alter(&$implementations, $hook) {
   }
 }
 
+function bangpoundmedia_media_wysiwyg_allowed_view_modes_alter(&$view_modes, $file) {
+  foreach ($view_modes as $key => $value) {
+    if ($key == 'embed') {
+      continue;
+    }
+    else {
+      unset($view_modes[$key]);
+    }
+  }
+}
+
 /**
  * Implementation of hook_media_token_to_markup_alter().
  */
