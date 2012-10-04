@@ -28,6 +28,8 @@ function bangpoundmedia_media_wysiwyg_allowed_view_modes_alter(&$view_modes, $fi
 
 /**
  * Implementation of hook_media_token_to_markup_alter().
+ *
+ * Re-render the file entity with its fields for the selected view mode.
  */
 function bangpoundmedia_media_token_to_markup_alter(&$element, $tag_info, $settings) {
   $file = $element['#file'];
@@ -35,6 +37,7 @@ function bangpoundmedia_media_token_to_markup_alter(&$element, $tag_info, $setti
 
   $new_element = file_view($file, $view_mode);
 
+  // Copy the attributes from the original element to the new one.
   if (isset($element['#attributes'])) {
     if (!isset($new_element['file']['#attributes'])) {
       $new_element['file']['#attributes'] = array();
@@ -92,13 +95,6 @@ function bangpoundmedia_theme($existing, $type, $theme, $path) {
 
 /**
  * Implement hook_theme_registry_alter().
- *
- * There's no consistent way to find an entity in the theme stack. To avoid conflicts, all
- * entity themes in the registry are annotated with the name of the entity's key in the
- * render element array. The preprocess function is only added to specific theme entities.
- *
- * Currently all entities are themed with a render element instead of variables.
- * field_attach_view() adds entity type and bundle info to the render elements.
  */
 function bangpoundmedia_theme_registry_alter(&$theme_registry) {
 
@@ -114,6 +110,9 @@ function bangpoundmedia_theme_registry_alter(&$theme_registry) {
   $theme_registry['file_entity__embed']['process functions'] = $info['process functions'];
 }
 
+/**
+ * Implement hook_preprocess_file_entity__embed().
+ */
 function template_preprocess_file_entity__embed(&$variables, $hook) {
   $elements = $variables['elements'];
   $variables['attributes_array'] = array_merge($variables['attributes_array'], $elements['#attributes']);
@@ -123,6 +122,9 @@ function template_preprocess_file_entity__embed(&$variables, $hook) {
   $variables['classes_array'] = array_merge($variables['classes_array'], array($elements['#attributes']['class']));
 }
 
+/**
+ * Implement hook_preprocess_file_entity().
+ */
 function bangpoundmedia_preprocess_file_entity(&$variables) {
   $view_mode = $variables['view_mode'];
   $file = $variables['file'];
