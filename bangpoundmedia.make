@@ -3,8 +3,6 @@
 api = 2
 core = 7.x
 
-projects[] = drupal
-
 projects[image_resize_filter][subdir] = contrib
 
 projects[media][version] = 2.x-dev
