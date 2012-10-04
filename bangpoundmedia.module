@@ -127,9 +127,7 @@ function template_preprocess_file_entity__embed(&$variables, $hook) {
  */
 function bangpoundmedia_preprocess_file_entity(&$variables) {
   $view_mode = $variables['view_mode'];
-  $file = $variables['file'];
   if ($view_mode == 'embed') {
     $variables['theme_hook_suggestion'] = 'file_entity__embed';
-    $variables['page'] = $view_mode == 'full' && file_is_page($file);
   }
 }
