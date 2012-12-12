@@ -1,16 +1,5 @@
 <?php
 
-function bangpoundmedia_media_wysiwyg_allowed_view_modes_alter(&$view_modes, $file) {
-  foreach ($view_modes as $key => $value) {
-    if ($key == 'embed') {
-      continue;
-    }
-    else {
-      unset($view_modes[$key]);
-    }
-  }
-}
-
 /**
  * Implementation of hook_media_token_to_markup_alter().
  *
@@ -41,7 +30,6 @@ function bangpoundmedia_media_token_to_markup_alter(&$element, $tag_info, $setti
 
   $element = $new_element;
 
-  $theme = $element['#theme'];
 
-  $element['#theme'] =  $theme .'__'. $view_mode;
+  $element['#media_filter'] = TRUE;
 }

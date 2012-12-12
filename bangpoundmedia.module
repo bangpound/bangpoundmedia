@@ -16,75 +16,25 @@ function bangpoundmedia_module_implements_alter(&$implementations, $hook) {
 }
 
 /**
- * Implementation of hook_entity_info_alter()
- */
-function bangpoundmedia_entity_info_alter(&$entity_info) {
-
-  $entity_info['file']['view modes']['embed'] = array(
-    'label' => t('Embed'),
-    'custom settings' => TRUE,
-  );
-}
-
-/**
  * Implementation of hook_filter_info_alter()
  */
 function bangpoundmedia_filter_info_alter(&$info) {
   $info['media_filter']['cache'] = FALSE;
 }
 
-function bangpoundmedia_theme($existing, $type, $theme, $path) {
-  return array(
-    'file_entity__embed' => array(
-      'render element' => 'elements',
-      'template' => 'file_entity--embed',
-
-      // For entity view mode themes.
-      'entity key' => '#file',
-      'override preprocess functions' => TRUE,
-      'override process functions' => TRUE,
-    ),
-  );
-}
-
-/**
- * Implement hook_theme_registry_alter().
- */
-function bangpoundmedia_theme_registry_alter(&$theme_registry) {
-
-  // Copy node theme to file__embed.
-  $info = $theme_registry['file_entity'];
-
-  // Find key of last template function.
-  $offset = array_search('template_preprocess_file_entity', $info['preprocess functions']);
-  $functions = array_slice($info['preprocess functions'], 0, $offset + 1);
-  $functions[] = 'template_preprocess_file_entity__embed';
-  $theme_registry['file_entity__embed']['preprocess functions'] = array_merge($functions, array_slice($info['preprocess functions'], $offset + 1));
-
-  $theme_registry['file_entity__embed']['process functions'] = $info['process functions'];
-}
-
-/**
- * Implement hook_preprocess_file_entity__embed().
- */
-function template_preprocess_file_entity__embed(&$variables, $hook) {
-  $elements = $variables['elements'];
-  $variables['attributes_array'] = array_merge($variables['attributes_array'], $elements['#attributes']);
-  if (isset($variables['attributes_array']['style'])) {
-    $variables['attributes_array']['style'] = preg_replace('|height: ?.+?\;|', '', $variables['attributes_array']['style']);
-  }
-  if (!is_array($elements['#attributes']['class'])) {
-    $elements['#attributes']['class'] = explode(' ', $elements['#attributes']['class']);
-  }
-  $variables['classes_array'] = array_merge($variables['classes_array'], $elements['#attributes']['class']);
-}
-
 /**
  * Implement hook_preprocess_file_entity().
  */
 function bangpoundmedia_preprocess_file_entity(&$variables) {
-  $view_mode = $variables['view_mode'];
-  if ($view_mode == 'embed') {
-    $variables['theme_hook_suggestion'] = 'file_entity__embed';
+  $elements = $variables['elements'];
+  if ($elements['#media_filter']) {
+    $variables['attributes_array'] = array_merge($variables['attributes_array'], $elements['#attributes']);
+    if (isset($variables['attributes_array']['style'])) {
+      $variables['attributes_array']['style'] = preg_replace('|height: ?.+?\;|', '', $variables['attributes_array']['style']);
+    }
+    if (!is_array($elements['#attributes']['class'])) {
+      $elements['#attributes']['class'] = explode(' ', $elements['#attributes']['class']);
+    }
+    $variables['classes_array'] = array_merge($variables['classes_array'], $elements['#attributes']['class']);
   }
 }
