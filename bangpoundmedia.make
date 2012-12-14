@@ -16,3 +16,9 @@ projects[file_entity][type] = module
 projects[file_entity][download][type] = git
 projects[file_entity][download][branch] = 7.x-2.x
 projects[file_entity][subdir] = contrib
+
+projects[oembed][version] = 0.x-dev
+projects[oembed][type] = module
+projects[oembed][download][type] = git
+projects[oembed][download][branch] = 7.x-0.x
+projects[oembed][subdir] = contrib
