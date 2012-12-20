@@ -22,3 +22,5 @@ projects[oembed][type] = module
 projects[oembed][download][type] = git
 projects[oembed][download][branch] = 7.x-0.x
 projects[oembed][subdir] = contrib
+
+projects[remote_stream_wrapper][subdir] = contrib
