@@ -17,7 +17,6 @@ function bangpoundmedia_media_token_to_markup_alter(array &$element, array $tag_
 
     // Regenerate render array for file.
     $element = file_view($file, $view_mode);
-    //$element['#theme_wrappers'] = array('container');
 
     // Replace the attributes on the file itself, but remove class which will be on
     // wrapper. The width and height from WYSIWYG settings need to be on the actual image.
