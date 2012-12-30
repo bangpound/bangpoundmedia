@@ -20,6 +20,9 @@ function bangpoundmedia_media_token_to_markup_alter(array &$element, array $tag_
 
     // Replace the attributes on the file itself, but remove class which will be on
     // wrapper. The width and height from WYSIWYG settings need to be on the actual image.
+    if (!isset($element['file']['#attributes'])) {
+      $element['file']['#attributes'] = array();
+    }
     $element['file']['#attributes'] = array_merge_recursive($element['file']['#attributes'], $attributes);
     unset($element['file']['#attributes']['class']);
 
