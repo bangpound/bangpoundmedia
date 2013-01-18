@@ -6,3 +6,4 @@ dependencies[] = media
 dependencies[] = oembed
 dependencies[] = remote_stream_wrapper
 dependencies[] = image_resize_filter
+dependencies[] = plupload
