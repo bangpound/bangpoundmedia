@@ -26,7 +26,7 @@ projects[oembed][subdir] = contrib
 projects[plupload][version] = 1.x
 projects[plupload][subdir] = contrib
 
-projects[html5_media][subdir] = contrib
+projects[mediaelement][subdir] = contrib
 
 projects[remote_stream_wrapper][subdir] = contrib
 
@@ -35,3 +35,10 @@ libraries[plupload][download][url] = https://github.com/downloads/moxiecode/plup
 libraries[plupload][directory_name] = plupload
 libraries[plupload][destination] = libraries
 libraries[plupload][type] = library
+
+libraries[mediaelement][download][type] = git
+libraries[mediaelement][download][url] = https://github.com/johndyer/mediaelement.git
+libraries[mediaelement][download][tag] = 2.10.1
+libraries[mediaelement][directory_name] = mediaelement
+libraries[mediaelement][destination] = libraries
+libraries[mediaelement][type] = library
