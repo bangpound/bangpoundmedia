@@ -89,6 +89,15 @@ function bangpoundmedia_file_displays_alter(&$displays, $file, $view_mode) {
 }
 
 /**
+ * Implements hook_ctools_plugin_api().
+ */
+function bangpoundmedia_ctools_plugin_api($module, $api) {
+  if ($module == 'file_entity' && $api == 'file_default_displays') {
+    return array('version' => 1);
+  }
+}
+
+/**
  * Implement hook_form_FORMID_alter().
  *
  * This hides the large filetype icon formatter on preview view modes because it is always
