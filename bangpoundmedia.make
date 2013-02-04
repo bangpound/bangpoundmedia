@@ -31,7 +31,7 @@ projects[mediaelement][subdir] = contrib
 projects[remote_stream_wrapper][subdir] = contrib
 
 libraries[plupload][download][type] = get
-libraries[plupload][download][url] = https://github.com/downloads/moxiecode/plupload/plupload_1_5_5.zip
+libraries[plupload][download][url] = http://plupload.com/downloads/plupload_1_5_5.zip
 libraries[plupload][directory_name] = plupload
 libraries[plupload][destination] = libraries
 libraries[plupload][type] = library
