@@ -23,7 +23,7 @@ function bangpoundmedia_media_token_to_markup_alter(array &$element, array $tag_
     if (!isset($element['file']['#attributes'])) {
       $element['file']['#attributes'] = array();
     }
-    $element['file']['#attributes'] = array_merge_recursive($element['file']['#attributes'], $attributes);
+    $element['file']['#attributes'] = array_merge($element['file']['#attributes'], $attributes);
     unset($element['file']['#attributes']['class']);
 
     // Copy style attribute to the outer wrapper but remove the height and reset width
