@@ -129,7 +129,7 @@ function bangpoundmedia_wysiwyg_editor_settings_alter(&$settings, $context) {
             'name' => 'Media left',
             'element' => 'img',
             'attributes' => array(
-              'class' => 'media-image-left media-element',
+              'align' => 'left',
             ),
           );
 
@@ -138,16 +138,7 @@ function bangpoundmedia_wysiwyg_editor_settings_alter(&$settings, $context) {
             'name' => 'Media right',
             'element' => 'img',
             'attributes' => array(
-              'class' => 'media-image-right media-element',
-            ),
-          );
-
-          // No alignment style.
-          $settings['stylesSet'][] = array(
-            'name' => 'Media no float',
-            'element' => 'img',
-            'attributes' => array(
-              'class' => 'media-float-none media-element',
+              'align' => 'right',
             ),
           );
 
