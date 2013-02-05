@@ -9,7 +9,7 @@ function bangpoundmedia_media_token_to_markup_alter(array &$element, array $tag_
   if (!isset($settings['wysiwyg'])) {
 
     // Copy the attributes from file's render array to add to the outer wrapper.
-    $attributes = $element['content']['file']['#attributes'];
+    $attributes = $element['content']['file']['#attributes'] + $settings['attributes'];
 
     // Regenerate embedded media from file entity already loaded.
     $file = $element['content']['file']['#file'];
