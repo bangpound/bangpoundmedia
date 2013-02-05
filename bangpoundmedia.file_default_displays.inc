@@ -25,14 +25,6 @@ function bangpoundmedia_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
-  $file_display->name = 'audio__default__oembed_thumbnail';
-  $file_display->weight = 0;
-  $file_display->status = TRUE;
-  $file_display->settings = array();
-  $file_displays['audio__default__oembed_thumbnail'] = $file_display;
-
-  $file_display = new stdClass();
-  $file_display->api_version = 1;
   $file_display->name = 'audio__preview__oembed_thumbnail';
   $file_display->weight = 10;
   $file_display->status = TRUE;
@@ -65,14 +57,6 @@ function bangpoundmedia_file_default_displays() {
     'wmode' => '',
   );
   $file_displays['document__default__oembed'] = $file_display;
-
-  $file_display = new stdClass();
-  $file_display->api_version = 1;
-  $file_display->name = 'document__default__oembed_thumbnail';
-  $file_display->weight = 0;
-  $file_display->status = TRUE;
-  $file_display->settings = array();
-  $file_displays['document__default__oembed_thumbnail'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -123,17 +107,6 @@ function bangpoundmedia_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
-  $file_display->name = 'image__default__oembed_thumbnail';
-  $file_display->weight = 11;
-  $file_display->status = TRUE;
-  $file_display->settings = array(
-    'width' => '480',
-    'height' => '480',
-  );
-  $file_displays['image__default__oembed_thumbnail'] = $file_display;
-
-  $file_display = new stdClass();
-  $file_display->api_version = 1;
   $file_display->name = 'image__preview__file_image';
   $file_display->weight = 5;
   $file_display->status = TRUE;
@@ -155,17 +128,6 @@ function bangpoundmedia_file_default_displays() {
     'wmode' => '',
   );
   $file_displays['image__preview__oembed'] = $file_display;
-
-  $file_display = new stdClass();
-  $file_display->api_version = 1;
-  $file_display->name = 'image__preview__oembed_thumbnail';
-  $file_display->weight = 11;
-  $file_display->status = TRUE;
-  $file_display->settings = array(
-    'width' => '180',
-    'height' => '180',
-  );
-  $file_displays['image__preview__oembed_thumbnail'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -193,17 +155,6 @@ function bangpoundmedia_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
-  $file_display->name = 'image__teaser__oembed_thumbnail';
-  $file_display->weight = 11;
-  $file_display->status = TRUE;
-  $file_display->settings = array(
-    'width' => '220',
-    'height' => '220',
-  );
-  $file_displays['image__teaser__oembed_thumbnail'] = $file_display;
-
-  $file_display = new stdClass();
-  $file_display->api_version = 1;
   $file_display->name = 'video__default__oembed';
   $file_display->weight = 10;
   $file_display->status = TRUE;
@@ -213,14 +164,6 @@ function bangpoundmedia_file_default_displays() {
     'wmode' => '',
   );
   $file_displays['video__default__oembed'] = $file_display;
-
-  $file_display = new stdClass();
-  $file_display->api_version = 1;
-  $file_display->name = 'video__default__oembed_thumbnail';
-  $file_display->weight = 0;
-  $file_display->status = TRUE;
-  $file_display->settings = array();
-  $file_displays['video__default__oembed_thumbnail'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
