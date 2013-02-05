@@ -2,6 +2,8 @@
 
 /**
  * Implement hook_file_displays_alter().
+ *
+ * @todo remove when 'default view callback' does anything.
  */
 function bangpoundmedia_file_displays_alter(&$displays, $file, $view_mode) {
   if ($view_mode == 'preview') {
