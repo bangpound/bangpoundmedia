@@ -1,10 +1,10 @@
-img.media-element[align=left]
-.media-image-left, {
+img.media-element[align=left],
+.media-image-left {
   float: left;
   margin-right: 1em;
 }
-img.media-element[align=right]
-.media-image-right, {
+img.media-element[align=right],
+.media-image-right {
   float: right;
   margin-left: 1em;
 }
