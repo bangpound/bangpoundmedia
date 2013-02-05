@@ -100,3 +100,64 @@ function bangpoundmedia_form_file_entity_file_display_form_alter(&$form, &$form_
     unset($form['displays']['order']['file_field_media_large_icon']);
   }
 }
+
+/**
+ * Implements hook_wysiwyg_editor_settings_alter().
+ *
+ * @param type $settings
+ * @param type $context
+ */
+function bangpoundmedia_wysiwyg_editor_settings_alter(&$settings, $context) {
+
+  // Style sets are a feature of CKEditor.
+  if ($context['profile']->editor == 'ckeditor') {
+
+    // Add these styles only to profiles whose format uses the media filter.
+    if (isset($context['profile']->format)) {
+
+      // Load all filter configurations for this format.
+      $filters = filter_list_format($context['profile']->format);
+      if ($filters && array_key_exists('media_filter', $filters)) {
+        if ($filters['media_filter']->status != 0) {
+
+          // The media-element class attribute value must be added to every style to
+          // prevent the media filter from detaching from the WYSIWYG images it uses
+          // as placeholders.
+
+          // Left alignment style.
+          $settings['stylesSet'][] = array(
+            'name' => 'Media left',
+            'element' => 'img',
+            'attributes' => array(
+              'class' => 'media-image-left media-element',
+            ),
+          );
+
+          // Right alignment style.
+          $settings['stylesSet'][] = array(
+            'name' => 'Media right',
+            'element' => 'img',
+            'attributes' => array(
+              'class' => 'media-image-right media-element',
+            ),
+          );
+
+          // No alignment style.
+          $settings['stylesSet'][] = array(
+            'name' => 'Media no float',
+            'element' => 'img',
+            'attributes' => array(
+              'class' => 'media-float-none media-element',
+            ),
+          );
+
+          // Stylesheet with those styles defined as minimally as possible
+          // so they work reliably in the WYSIWYG editor and when viewing
+          // content.
+          $css = drupal_get_path('module', 'bangpoundmedia') .'/bangpoundmedia.css';
+          $settings['contentsCss'][] = url($css);
+        }
+      }
+    }
+  }
+}
