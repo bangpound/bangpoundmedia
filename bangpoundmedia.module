@@ -32,7 +32,10 @@ function bangpoundmedia_preprocess_file_entity(&$variables) {
     if (isset($variables['attributes_array']['style'])) {
       $variables['attributes_array']['style'] = preg_replace('|height: ?.+?\;|', '', $variables['attributes_array']['style']);
     }
-    if (!is_array($elements['#attributes']['class'])) {
+    if (!isset($elements['#attributes']['class'])) {
+      $elements['#attributes']['class'] = array();
+    }
+    else if (!is_array($elements['#attributes']['class'])) {
       $elements['#attributes']['class'] = explode(' ', $elements['#attributes']['class']);
     }
     $variables['classes_array'] = array_merge($variables['classes_array'], $elements['#attributes']['class']);
