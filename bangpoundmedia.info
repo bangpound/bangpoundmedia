@@ -8,3 +8,4 @@ dependencies[] = remote_stream_wrapper
 dependencies[] = image_resize_filter
 dependencies[] = plupload
 stylesheets[all][] = bangpoundmedia.css
+files[] = IMCEMediaBrowser.inc

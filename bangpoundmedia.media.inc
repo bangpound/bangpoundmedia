@@ -61,3 +61,20 @@ function bangpoundmedia_media_token_to_markup_alter(array &$element, array $tag_
     $element['#media_filter'] = TRUE;
   }
 }
+
+/**
+ * Implement hook_media_browser_plugin_info().
+ */
+function bangpoundmedia_media_browser_plugin_info() {
+  $info = array();
+
+  if (module_exists('imce')) {
+    $info['imce'] = array(
+      'title' => t('IMCE'),
+      'class' => 'IMCEMediaBrowser',
+      'weight' => 10,
+    );
+  }
+
+  return $info;
+}

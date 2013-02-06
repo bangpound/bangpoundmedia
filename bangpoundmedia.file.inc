@@ -16,4 +16,3 @@ function bangpoundmedia_file_displays_alter(&$displays, $file, $view_mode) {
     );
   }
 }
-
