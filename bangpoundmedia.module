@@ -19,7 +19,18 @@ function bangpoundmedia_module_implements_alter(&$implementations, $hook) {
  * Implementation of hook_filter_info_alter()
  */
 function bangpoundmedia_filter_info_alter(&$info) {
-  $info['media_filter']['cache'] = FALSE;
+  $info['media_filter']['process callback'] = 'bangpoundmedia_filter';
+}
+
+
+/**
+ * Filter callback for media markup filter.
+ *
+ * Replaces Media filter tags with inline macro which is decoded when entity is viewed.
+ */
+function bangpoundmedia_filter($text) {
+  $text = preg_replace_callback(MEDIA_TOKEN_REGEX, 'bangpoundmedia_token_to_inline', $text);
+  return $text;
 }
 
 /**
@@ -178,4 +189,31 @@ function bangpoundmedia_imce_scan_directory($dirname, $imce) {
     }
   }
   return $directory;
+}
+
+/**
+ * Encodes Media filter tag as inline macro.
+ */
+function bangpoundmedia_token_to_inline($match) {
+  $tag = $match[0];
+
+  // Using the serialize method on the parser causes
+  // `Fatal error:  Class 'MediaFilterMacro' not found`
+  // because __FUNCTION__ may be called before bootstrap is complete.
+
+  $macro_params = array();
+  $macro_params[] = 'media_filter';
+  $macro_params[] = 'tag='. base64_encode($tag);
+  $output = '[' . implode('|', $macro_params) . ']';
+  return $output;
+}
+
+/**
+ * Implements hook_inline_info().
+ */
+function bangpoundmedia_inline_info() {
+  $info['media_filter'] = array(
+    'class' => 'Drupal\bangpoundmedia\MediaFilterMacro',
+  );
+  return $info;
 }
