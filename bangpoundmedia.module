@@ -85,6 +85,14 @@ function bangpoundmedia_file_formatter_info_alter(&$info) {
   if (isset($info['file_field_media_large_icon'])) {
     $info['file_field_media_large_icon']['description'] = t('Reliable fallback for the <em>preview</em> view mode.');
   }
+
+  if (isset($info['file_field_mediaelement_video'])) {
+    $info['file_field_mediaelement_video']['file types'][] = 'video';
+  }
+
+  if (isset($info['file_field_mediaelement_audio'])) {
+    $info['file_field_mediaelement_audio']['file types'][] = 'audio';
+  }
 }
 
 /**
