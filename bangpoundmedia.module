@@ -113,10 +113,45 @@ function bangpoundmedia_ctools_plugin_api($module, $api) {
  * @see bangpoundmedia_file_displays_alter().
  */
 function bangpoundmedia_form_file_entity_file_display_form_alter(&$form, &$form_state) {
+  $file_type = $form_state['build_info']['args'][0]->type;
   $view_mode = $form_state['build_info']['args'][1];
+
   if ($view_mode == 'preview') {
     unset($form['displays']['status']['file_field_media_large_icon']);
     unset($form['displays']['order']['file_field_media_large_icon']);
+  }
+
+  $current_displays = file_displays_load($file_type, $view_mode, TRUE);
+  foreach ($current_displays as $name => $display) {
+    $current_displays[$name] = (array) $display;
+  }
+
+  $formatters = file_info_formatter_types();
+  $formatter_types = array('file_field_mediaelement_video', 'file_field_mediaelement_audio');
+  $types = array_intersect($formatter_types, array_keys($form['displays']['settings']));
+  if (!empty($types)) {
+    $visible_steam_wrappers = file_get_stream_wrappers(STREAM_WRAPPERS_READ_VISIBLE);
+    $options = array();
+    foreach ($visible_steam_wrappers as $scheme => $information) {
+      $options[$scheme] = check_plain($information['name']);
+    }
+    foreach ($formatter_types as $name) {
+
+      $defaults = !empty($formatters[$name]['default settings']) ? $formatters[$name]['default settings'] : array();
+      $settings = !empty($current_displays[$name]['settings']) ? $current_displays[$name]['settings'] : array();
+      $settings += $defaults;
+
+      if (isset($form['displays']['settings'][$name])) {
+        $form['displays']['settings'][$name]['allowed_schemes'] = array(
+          '#type' => 'checkboxes',
+          '#title' => t('Allowed URI schemes'),
+          '#options' => $options,
+          '#default_value' => $settings['allowed_schemes'],
+          '#description' => t('URI schemes include public:// and private:// which are the Drupal files directories, and may also refer to remote sites.'),
+          '#weight' => 2,
+        );
+      }
+    }
   }
 }
 
