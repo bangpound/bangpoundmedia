@@ -14,7 +14,7 @@ function bangpoundmedia_file_displays_alter(&$displays, $file, $view_mode) {
   if (!empty($types)) {
     $scheme = file_uri_scheme($file->uri);
     foreach ($types as $type) {
-      if (!in_array($scheme, array_keys(array_filter($displays[$type]['settings']['allowed_schemes'])))) {
+      if (isset($displays[$type]['settings']['allowed_schemes']) && !in_array($scheme, array_keys(array_filter($displays[$type]['settings']['allowed_schemes'])))) {
         $displays[$type]['status'] = 0;
       }
     }
