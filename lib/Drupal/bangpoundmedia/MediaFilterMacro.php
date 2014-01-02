@@ -30,7 +30,7 @@ class MediaFilterMacro extends MacroBase {
       return t('A media filter tag is required');
     }
     if (!base64_decode($this->params['tag'], TRUE)) {
-      return t('The tag paramter is not valid base64.');
+      return t('The tag parameter is not valid base64.');
     }
 
     // TODO: Also check for validity of JSON?
