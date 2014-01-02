@@ -23,7 +23,7 @@ projects[oembed][download][type] = git
 projects[oembed][download][branch] = 7.x-1.x
 projects[oembed][subdir] = contrib
 
-projects[plupload][version] = 1.2
+projects[plupload][version] = 1.4
 projects[plupload][subdir] = contrib
 
 projects[mediaelement][subdir] = contrib
