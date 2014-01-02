@@ -2,6 +2,7 @@ name = !&# Media
 description = Provides media extensions
 core = 7.x
 php = 5.2.4
+package = !&#
 dependencies[] = media
 dependencies[] = oembed
 dependencies[] = inline
