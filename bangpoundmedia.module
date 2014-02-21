@@ -60,34 +60,6 @@ function bangpoundmedia_preprocess_file_entity(&$variables) {
  */
 function bangpoundmedia_file_formatter_info_alter(&$info) {
 
-  // Remove the core Image formatter because File Entity module provides a better one.
-  if (isset($info['file_image']) && isset($info['file_field_image'])) {
-    unset($info['file_field_image']);
-  }
-
-  // The table formatter is useful for file fields with multiple values, but it is not
-  // as useful for the file display because this is always a single value.
-  if (isset($info['file_field_file_table'])) {
-    unset($info['file_field_file_table']);
-  }
-
-  // Rendered file formatter is not useful for file displays.
-  if (isset($info['file_field_file_rendered'])) {
-    unset($info['file_field_file_rendered']);
-  }
-
-  if (isset($info['file_field_file_default'])) {
-    $info['file_field_file_default']['description'] = t('An icon and the filename.');
-  }
-
-  if (isset($info['file_field_file_url_plain'])) {
-    $info['file_field_file_url_plain']['description'] = t('Plain text URL.');
-  }
-
-  if (isset($info['file_field_media_large_icon'])) {
-    $info['file_field_media_large_icon']['description'] = t('Reliable fallback for the <em>preview</em> view mode.');
-  }
-
   if (isset($info['file_field_mediaelement_video'])) {
     $info['file_field_mediaelement_video']['file types'][] = 'video';
   }
