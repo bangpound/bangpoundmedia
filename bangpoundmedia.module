@@ -160,8 +160,8 @@ function bangpoundmedia_form_file_entity_file_display_form_alter(&$form, &$form_
 /**
  * Implements hook_wysiwyg_editor_settings_alter().
  *
- * @param type $settings
- * @param type $context
+ * @param array $settings
+ * @param array $context
  */
 function bangpoundmedia_wysiwyg_editor_settings_alter(&$settings, $context) {
 
