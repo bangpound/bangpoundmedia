@@ -146,7 +146,7 @@ function bangpoundmedia_form_file_entity_file_display_form_alter(&$form, &$form_
           '#type' => 'checkboxes',
           '#title' => t('Allowed URI schemes'),
           '#options' => $options,
-          '#default_value' => $settings['allowed_schemes'],
+          '#default_value' => isset($settings['allowed_schemes']) ? $settings['allowed_schemes'] : array(),
           '#description' => t('URI schemes include public:// and private:// which are the Drupal files directories, and may also refer to remote sites.'),
           '#weight' => 2,
         );
