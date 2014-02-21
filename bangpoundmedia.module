@@ -8,7 +8,7 @@
  * Implementation of hook_module_implements_alter().
  */
 function bangpoundmedia_module_implements_alter(&$implementations, $hook) {
-  if ($hook == 'media_token_to_markup_alter') {
+  if ($hook == 'media_wysiwyg_token_to_markup_alter') {
     $group = $implementations['bangpoundmedia'];
     unset($implementations['bangpoundmedia']);
     $implementations['bangpoundmedia'] = $group;
@@ -19,7 +19,9 @@ function bangpoundmedia_module_implements_alter(&$implementations, $hook) {
  * Implementation of hook_filter_info_alter()
  */
 function bangpoundmedia_filter_info_alter(&$info) {
-  $info['media_filter']['process callback'] = 'bangpoundmedia_filter';
+  if ($info['media_filter']['process callback'] == 'media_wysiwyg_filter') {
+    $info['media_filter']['process callback'] = 'bangpoundmedia_filter';
+  }
 }
 
 
@@ -29,7 +31,7 @@ function bangpoundmedia_filter_info_alter(&$info) {
  * Replaces Media filter tags with inline macro which is decoded when entity is viewed.
  */
 function bangpoundmedia_filter($text) {
-  $text = preg_replace_callback(MEDIA_TOKEN_REGEX, 'bangpoundmedia_token_to_inline', $text);
+  $text = preg_replace_callback(MEDIA_WYSIWYG_TOKEN_REGEX, 'bangpoundmedia_token_to_inline', $text);
   return $text;
 }
 

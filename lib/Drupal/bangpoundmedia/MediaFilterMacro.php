@@ -42,6 +42,6 @@ class MediaFilterMacro extends MacroBase {
   }
 
   public function view(array $context) {
-    return media_token_to_markup(array($this->tag));
+    return media_wysiwyg_token_to_markup(array($this->tag));
   }
 }
