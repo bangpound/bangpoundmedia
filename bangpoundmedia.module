@@ -137,7 +137,11 @@ function bangpoundmedia_imce_scan_directory($dirname, $imce) {
  * Encodes Media filter tag as inline macro.
  */
 function bangpoundmedia_token_to_inline($match) {
-  $tag = $match[0];
+  $tag = str_replace(array('[[', ']]'), '', $match[0]);
+
+  $tag_info = drupal_json_decode($tag);
+  drupal_alter('bangpoundmedia_wysiwyg_token', $tag_info);
+  $tag = drupal_json_encode($tag_info);
 
   // Using the serialize method on the parser causes
   // `Fatal error:  Class 'MediaFilterMacro' not found`
