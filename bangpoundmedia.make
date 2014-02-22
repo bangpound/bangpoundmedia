@@ -30,6 +30,6 @@ projects[remote_stream_wrapper][subdir] = contrib
 
 libraries[plupload][download][type] = get
 libraries[plupload][directory_name] = plupload
-libraries[plupload][download][url] = http://plupload.com/downloads/plupload_1_5_7.zip
-libraries[plupload][patch][] = http://drupal.org/files/plupload-1_5_7-rm_examples-1903850-9.patch
+libraries[plupload][download][url] = https://github.com/moxiecode/plupload/archive/v1.5.8.zip
+libraries[plupload][patch][] = https://drupal.org/files/issues/plupload-1_5_8-rm_examples-1903850-16.patch
 libraries[plupload][type] = library
