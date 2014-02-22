@@ -26,8 +26,6 @@ projects[oembed][subdir] = contrib
 projects[plupload][version] = 1.6
 projects[plupload][subdir] = contrib
 
-projects[mediaelement][subdir] = contrib
-
 projects[remote_stream_wrapper][subdir] = contrib
 
 libraries[plupload][download][type] = get
@@ -35,10 +33,3 @@ libraries[plupload][directory_name] = plupload
 libraries[plupload][download][url] = http://plupload.com/downloads/plupload_1_5_7.zip
 libraries[plupload][patch][] = http://drupal.org/files/plupload-1_5_7-rm_examples-1903850-9.patch
 libraries[plupload][type] = library
-
-libraries[mediaelement][download][type] = git
-libraries[mediaelement][download][url] = https://github.com/johndyer/mediaelement.git
-libraries[mediaelement][download][tag] = 2.11.3
-libraries[mediaelement][directory_name] = mediaelement
-libraries[mediaelement][destination] = libraries
-libraries[mediaelement][type] = library
