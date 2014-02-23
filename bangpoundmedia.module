@@ -1,8 +1,11 @@
 <?php
 /**
  * @file
- * Code for the bangpoundmedia feature.
+ * Code for the bangpoundmedia module.
  */
+
+// Load all Field module hooks for !&# Media.
+require_once dirname(__FILE__) . '/bangpoundmedia.field.inc';
 
 /**
  * Implementation of hook_module_implements_alter().
