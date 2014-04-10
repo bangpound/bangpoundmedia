@@ -22,7 +22,6 @@ Precautions
 -----------
 This module removes File formatters that don't make any sense.
 
-* `file_field_image` is not available because it is superseded by `file_image` which uses tokens for `alt` and `title` attributes.
 * `file_field_file_table` is not available because the file formatter only works on one file at a time, adn the table formatter is intended to show multiple values.
 * `file_field_file_rendered` is not available because it is confusing and potentially recursive.
 * Other file formatters have descriptions.
