@@ -11,4 +11,3 @@ dependencies[] = oembed
 dependencies[] = plupload
 dependencies[] = remote_stream_wrapper
 stylesheets[all][] = bangpoundmedia.css
-files[] = IMCEMediaBrowser.inc

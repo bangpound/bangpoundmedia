@@ -110,33 +110,6 @@ function bangpoundmedia_wysiwyg_editor_settings_alter(&$settings, $context) {
 }
 
 /**
- * Comes after IMCE's normal process function.
- */
-function bangpoundmedia_imce_process(&$imce) {
-  $imce['perm']['upload'] = FALSE;
-  $imce['perm']['thumb'] = FALSE;
-  $imce['perm']['delete'] = FALSE;
-  $imce['perm']['resize'] = FALSE;
-}
-
-/**
- * For managed files, attach a media item to the table row.
- */
-function bangpoundmedia_imce_scan_directory($dirname, $imce) {
-  $directory = imce_scan_directory($dirname, $imce);
-  $prefix = 'public://'. $dirname;
-  foreach ($directory['files'] as &$file) {
-    $obj = file_uri_to_object($prefix .'/'. $file['name']);
-    media_browser_build_media_item($obj);
-    if (isset($obj->fid)) {
-      $file['fid'] = $obj->fid;
-      $file['media_item'] = $obj;
-    }
-  }
-  return $directory;
-}
-
-/**
  * Encodes Media filter tag as inline macro.
  */
 function bangpoundmedia_token_to_inline($match) {
