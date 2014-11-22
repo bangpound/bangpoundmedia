@@ -24,7 +24,7 @@ projects[oembed][download][branch] = 7.x-1.x
 projects[oembed][subdir] = contrib
 projects[oembed][patch][] = https://drupal.org/files/issues/oembed-inline-dependency-remove-2239345-1_0.patch
 
-projects[plupload][version] = 1.6
+projects[plupload][version] = 1.7
 projects[plupload][subdir] = contrib
 
 projects[remote_stream_wrapper][subdir] = contrib
