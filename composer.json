@@ -1,7 +1,26 @@
 {
+    "name": "bangpound/media-module",
+    "description": "Media module",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
     "autoload": {
         "psr-0": {
             "Drupal\\bangpoundmedia\\": "lib/"
+        }
+    },
+    "require": {
+        "composer/installers": "~1.0",
+        "symfony/property-access": "~2.0"
+    },
+    "authors": [
+        {
+            "name": "Benjamin Doherty",
+            "email": "bjd@bangpound.org"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "7.0.x-dev"
         }
     }
 }
