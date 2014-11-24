@@ -43,7 +43,7 @@ function bangpoundmedia_filter($text) {
 function bangpoundmedia_preprocess_file_entity(&$variables) {
   $elements = $variables['elements'];
   if (isset($elements['#media_filter'])) {
-    $variables['attributes_array'] = array_merge($variables['attributes_array'], $elements['#attributes']);
+    $variables['attributes_array'] = array_merge($variables['attributes_array'], $elements['file']['#attributes']);
     if (isset($variables['attributes_array']['style'])) {
       $variables['attributes_array']['style'] = preg_replace('|height: ?.+?\;|', '', $variables['attributes_array']['style']);
     }
