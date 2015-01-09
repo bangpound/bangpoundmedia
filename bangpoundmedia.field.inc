@@ -149,31 +149,22 @@ function bangpoundmedia_field_formatter_view($entity_type, $entity, $field, $ins
     if ($files_display) {
       foreach ($files_display as $fid => $file) {
         $files_display[$fid]->referencing_entity = $entity;
+        $files_display[$fid]->referencing_entity_type = $entity_type;
         $files_display[$fid]->referencing_field = $field['field_name'];
       }
       $output = file_view_multiple($files_display, $view_mode);
       // Remove the first level from the output array.
       $files_built = reset($output);
-    }
 
-    // Check if the formatter involves a link.
-    if ($display['settings']['image_link'] == 'content') {
-      $uri = entity_uri($entity_type, $entity);
-    }
-    elseif ($display['settings']['image_link'] == 'file') {
-      $link_file = TRUE;
-    }
-
-    foreach (element_children($files_built) as $child_key) {
-      if ($files_built[$child_key]['file']['#theme'] == 'image_formatter') {
-        if (isset($link_file)) {
-          $uri = array(
-            'path' => file_create_url($files_built[$child_key]['file']['#item']['uri']),
-            'options' => array(),
-          );
+      // For certain types of themed output, we regenerate the output with
+      // a plain image formatter.
+      foreach (element_children($files_built) as $child_key) {
+        switch ($files_built[$child_key]['file']['#theme']) {
+          case 'image':
+          case 'image_style':
+            $files_built[$child_key]['file'] = _bangpoundmedia_file_formatter_file_field_view($entity_type, $entity, $files_built[$child_key]['#file'], array_merge($display, array('type' => 'file_field_image')), $langcode);
+            break;
         }
-        $files_built[$child_key]['file']['#image_style'] = $display['settings']['image_style'];
-        $files_built[$child_key]['file']['#path'] = isset($uri) ? $uri : '';
       }
     }
 
@@ -184,5 +175,49 @@ function bangpoundmedia_field_formatter_view($entity_type, $entity, $field, $ins
       }
     }
   }
+
   return $element;
+}
+
+/**
+ * @see file_entity_file_formatter_file_field_view
+ */
+function _bangpoundmedia_file_formatter_file_field_view($entity_type, $entity, $file, $display, $langcode) {
+  if (strpos($display['type'], 'file_field_') === 0) {
+    $field_formatter_type = substr($display['type'], strlen('file_field_'));
+    $field_formatter_info = field_info_formatter_types($field_formatter_type);
+    if (isset($field_formatter_info['module'])) {
+      // Set $display['type'] to what hook_field_formatter_*() expects.
+      $display['type'] = $field_formatter_type;
+
+      // Allow any attribute overrides (e.g. from the Media module) to be
+      // respected.
+      $item = (array) $file;
+      if (!empty($file->override['attributes'])) {
+        $item = array_merge($item, $file->override['attributes']);
+      }
+
+      // Set $items to what file field formatters expect. See file_field_load(),
+      // and note that, here, $file is already a fully loaded entity.
+      $items = array($item);
+
+      // Invoke hook_field_formatter_prepare_view() and
+      // hook_field_formatter_view().
+      $field = $instance = NULL;
+      if (($function = ($field_formatter_info['module'] . '_field_formatter_prepare_view')) && function_exists($function)) {
+        $fid = $file->fid;
+        // hook_field_formatter_prepare_view() alters $items by reference.
+        $grouped_items = array($fid => &$items);
+        list($id) = entity_extract_ids($entity_type, $entity);
+        $function($entity_type, array($id => $entity), $field, array($fid => $instance), $langcode, $grouped_items, array($fid => $display));
+      }
+      if (($function = ($field_formatter_info['module'] . '_field_formatter_view')) && function_exists($function)) {
+        $element = $function($entity_type, $entity, $field, $instance, $langcode, $items, $display);
+        // We passed the file as $items[0], so return the corresponding element.
+        if (isset($element[0])) {
+          return $element[0];
+        }
+      }
+    }
+  }
 }
