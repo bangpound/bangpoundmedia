@@ -58,7 +58,9 @@ function bangpoundmedia_media_wysiwyg_token_to_markup_alter(array &$element, arr
     }
 
     // Only add class and style attribute from rendered file to the outer wrapper.
-    $element['#attributes'] = array_intersect_key($element['#attributes'], array('class' => ''));
+    if (isset($element['#attributes'])) {
+      $element['#attributes'] = array_intersect_key($element['#attributes'], array('class' => ''));
+    }
 
     $element['#theme'] .= '__'. $view_mode;
     $element['#media_filter'] = TRUE;

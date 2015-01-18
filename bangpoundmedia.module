@@ -43,18 +43,22 @@ function bangpoundmedia_filter($text) {
 function bangpoundmedia_preprocess_file_entity(&$variables) {
   $elements = $variables['elements'];
   if (isset($elements['#media_filter'])) {
-    $variables['attributes_array']['style'] = preg_replace('|height: ?.+?\;|', '', $elements['file']['#attributes']['style']);
+    if (isset($elements['file']['#attributes']['style'])) {
+      $variables['attributes_array']['style'] = preg_replace('|height: ?.+?\;|', '', $elements['file']['#attributes']['style']);
+    }
 
-    if (is_array($elements['#attributes']['class'])) {
-      $class = $elements['#attributes']['class'];
+    if (isset($elements['#attributes'])) {
+      if (is_array($elements['#attributes']['class'])) {
+        $class = $elements['#attributes']['class'];
+      }
+      else if (is_string($elements['#attributes']['class'])) {
+        $class = explode(' ', $elements['#attributes']['class']);
+      }
+      else {
+        $class = array();
+      }
+      $variables['classes_array'] = array_merge($variables['classes_array'], $class);
     }
-    else if (is_string($elements['#attributes']['class'])) {
-      $class = explode(' ', $elements['#attributes']['class']);
-    }
-    else {
-      $class = array();
-    }
-    $variables['classes_array'] = array_merge($variables['classes_array'], $class);
   }
 }
 
