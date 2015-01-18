@@ -36,16 +36,24 @@ function bangpoundmedia_media_wysiwyg_token_to_markup_alter(array &$element, arr
     if (isset($element['file']['#attributes']['style'])) {
       // Convert float on file to class attribute on container.
       $style = media_wysiwyg_parse_css_declarations($element['file']['#attributes']['style']);
+      if (!isset($style['width']) && isset($element['file']['#file']->metadata['width'])) {
+        $style['width'] = $element['file']['#file']->metadata['width'] .'px';
+      }
+      if (!isset($style['height']) && isset($element['file']['#file']->metadata['height'])) {
+        $style['height'] = $element['file']['#file']->metadata['height'] .'px';
+      }
+
       if (isset($style['float'])) {
         $element['#attributes']['class'][] = 'figure__'. $style['float'];
         // Prevent double floating.
         unset($style['float']);
-        $style = bangpoundmedia_compile_style_attribute($style);
-        $element['file']['#attributes']['style'] = $style;
+      }
 
-        if (isset($element['file']['#item'])) {
-          $element['file']['#item']['attributes']['style'] = $style;
-        }
+      $style = bangpoundmedia_compile_style_attribute($style);
+      $element['file']['#attributes']['style'] = $style;
+
+      if (isset($element['file']['#item'])) {
+        $element['file']['#item']['attributes']['style'] = $style;
       }
     }
 
