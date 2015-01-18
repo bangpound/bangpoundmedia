@@ -60,17 +60,11 @@ function bangpoundmedia_media_wysiwyg_token_to_markup_alter(array &$element, arr
     unset($style['float']);
 
     // Regenerate style attribute from remaining properties.
-    $attributes['style'] = '';
-    foreach ($style as $key => $value) {
-      $attributes['style'] .= $key .':'. $value .';';
-    }
+    $attributes['style'] = bangpoundmedia_compile_style_attribute($style);
 
     $style = media_wysiwyg_parse_css_declarations(isset($element['file']['#attributes']['style']) ? $element['file']['#attributes']['style'] : '');
     unset($style['float']);
-    $element['file']['#attributes']['style'] = '';
-    foreach ($style as $key => $value) {
-      $element['file']['#attributes']['style'] .= $key .':'. $value .';';
-    }
+    $element['file']['#attributes']['style'] = bangpoundmedia_compile_style_attribute($style);
 
     // Only add class and style attribute from rendered file to the outer wrapper.
     $element['#attributes'] = array_intersect_key(array_filter($attributes), array_flip(array('class', 'style')));
@@ -78,4 +72,12 @@ function bangpoundmedia_media_wysiwyg_token_to_markup_alter(array &$element, arr
     $element['#theme'] .= '__'. $view_mode;
     $element['#media_filter'] = TRUE;
   }
+}
+
+function bangpoundmedia_compile_style_attribute($style) {
+  $output = '';
+  foreach ($style as $key => $value) {
+    $output .= $key .':'. $value .';';
+  }
+  return $output;
 }
