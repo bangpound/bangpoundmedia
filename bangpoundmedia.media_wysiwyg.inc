@@ -50,10 +50,10 @@ function bangpoundmedia_media_wysiwyg_token_to_markup_alter(array &$element, arr
     // Add class to wrapper that indicates how the embedded media is aligned. Find this
     // as the image alignment from WYSIWYG image properties or as float attribute of
     if (isset($attributes['align'])) {
-      $attributes['class'][] = 'media-image-'. $attributes['align'];
+      $attributes['class'][] = 'figure__'. $attributes['align'];
     }
     else if (isset($style['float'])) {
-      $attributes['class'][] = 'media-image-'. $style['float'];
+      $attributes['class'][] = 'figure__'. $style['float'];
     }
 
     // Prevent double floating.
