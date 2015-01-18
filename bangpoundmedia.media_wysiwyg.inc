@@ -8,8 +8,8 @@
 function bangpoundmedia_media_wysiwyg_token_to_markup_alter(array &$element, array $tag_info, array $settings) {
   $langcode = $GLOBALS['language_content']->language;
 
-    // Copy the attributes from file's render array to add to the outer wrapper.
-    $attributes = $element['content']['file']['#attributes'] + $settings['attributes'];
+  if (!isset($settings['wysiwyg'])) {
+    $build = $element['content']['file'];
 
     // Regenerate embedded media from file entity already loaded.
     $file = $element['content']['file']['#file'];
@@ -24,47 +24,33 @@ function bangpoundmedia_media_wysiwyg_token_to_markup_alter(array &$element, arr
     drupal_alter('entity_view_mode', $view_mode, $context);
 
     // Regenerate render array for file.
-    $element = file_view($file, $view_mode);
-
-    // Replace the attributes on the file itself, but remove class which will be on
-    // wrapper. The width and height from WYSIWYG settings need to be on the actual image.
-    if (!isset($element['file']['#attributes'])) {
-      $element['file']['#attributes'] = array();
-    }
-    $element['file']['#attributes'] = array_merge($element['file']['#attributes'], $attributes);
-    unset($element['file']['#attributes']['class']);
-
-    // Copy style attribute to the outer wrapper but remove the height and reset width
-    // if it's not in style but only part of element attributes.
-    $style = media_wysiwyg_parse_css_declarations(isset($attributes['style']) ? $attributes['style'] : '');
-    if (isset($style['height'])) {
-      unset($style['height']);
-    }
-    if (isset($style['width'])) {
-      unset($style['width']);
-    }
+    $element = file_view($file, $view_mode, $langcode);
+    $element['file'] = $build;
 
     // Add class to wrapper that indicates how the embedded media is aligned. Find this
     // as the image alignment from WYSIWYG image properties or as float attribute of
-    if (isset($attributes['align'])) {
-      $attributes['class'][] = 'figure__'. $attributes['align'];
-    }
-    else if (isset($style['float'])) {
-      $attributes['class'][] = 'figure__'. $style['float'];
+    if (isset($element['file']['#attributes']['align'])) {
+      $element['#attributes']['class'][] = 'figure__'. $element['file']['#attributes']['align'];
     }
 
-    // Prevent double floating.
-    unset($style['float']);
+    if (isset($element['file']['#attributes']['style'])) {
+      // Convert float on file to class attribute on container.
+      $style = media_wysiwyg_parse_css_declarations($element['file']['#attributes']['style']);
+      if (isset($style['float'])) {
+        $element['#attributes']['class'][] = 'figure__'. $style['float'];
+        // Prevent double floating.
+        unset($style['float']);
+        $style = bangpoundmedia_compile_style_attribute($style);
+        $element['file']['#attributes']['style'] = $style;
 
-    // Regenerate style attribute from remaining properties.
-    $attributes['style'] = bangpoundmedia_compile_style_attribute($style);
-
-    $style = media_wysiwyg_parse_css_declarations(isset($element['file']['#attributes']['style']) ? $element['file']['#attributes']['style'] : '');
-    unset($style['float']);
-    $element['file']['#attributes']['style'] = bangpoundmedia_compile_style_attribute($style);
+        if (isset($element['file']['#item'])) {
+          $element['file']['#item']['attributes']['style'] = $style;
+        }
+      }
+    }
 
     // Only add class and style attribute from rendered file to the outer wrapper.
-    $element['#attributes'] = array_intersect_key(array_filter($attributes), array_flip(array('class', 'style')));
+    $element['#attributes'] = array_intersect_key($element['#attributes'], array('class' => ''));
 
     $element['#theme'] .= '__'. $view_mode;
     $element['#media_filter'] = TRUE;
