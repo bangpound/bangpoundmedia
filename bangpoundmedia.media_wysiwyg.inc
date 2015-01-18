@@ -6,10 +6,7 @@
  * Re-render the file entity with its fields for the selected view mode.
  */
 function bangpoundmedia_media_wysiwyg_token_to_markup_alter(array &$element, array $tag_info, array $settings) {
-  if (!isset($langcode)) {
-    $langcode = $GLOBALS['language_content']->language;
-  }
-  if (!isset($settings['wysiwyg'])) {
+  $langcode = $GLOBALS['language_content']->language;
 
     // Copy the attributes from file's render array to add to the outer wrapper.
     $attributes = $element['content']['file']['#attributes'] + $settings['attributes'];
