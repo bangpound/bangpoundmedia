@@ -202,7 +202,14 @@ function _bangpoundmedia_file_formatter_file_field_view($entity_type, $entity, $
       $items = array($item);
 
       // Invoke hook_field_formatter_prepare_view() and
-      // hook_field_formatter_view().
+      // hook_field_formatter_view(). Note that we are reusing field formatter
+      // functions, but we are not displaying a Field API field, so we set
+      // $field and $instance accordingly, and do not invoke
+      // hook_field_prepare_view(). This assumes that the formatter functions do
+      // not rely on $field or $instance. A module that implements formatter
+      // functions that rely on $field or $instance (and therefore, can only be
+      // used for real fields) can prevent this formatter from being used on the
+      // pseudo-field by removing it within hook_file_formatter_info_alter().
       $field = $instance = NULL;
       if (($function = ($field_formatter_info['module'] . '_field_formatter_prepare_view')) && function_exists($function)) {
         $fid = $file->fid;
