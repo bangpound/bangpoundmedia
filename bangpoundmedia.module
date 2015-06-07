@@ -30,7 +30,7 @@ function bangpoundmedia_filter_info_alter(&$info) {
  * Replaces Media filter tags with inline macro which is decoded when entity is viewed.
  */
 function bangpoundmedia_filter($text) {
-  $text = preg_replace_callback(MEDIA_WYSIWYG_TOKEN_REGEX, 'bangpoundmedia_token_to_inline', $text);
+  $text = preg_replace_callback(MEDIA_WYSIWYG_TOKEN_REGEX, 'bangpoundmedia_token_to_markup', $text);
   return $text;
 }
 
@@ -114,22 +114,14 @@ function bangpoundmedia_wysiwyg_editor_settings_alter(&$settings, $context) {
 /**
  * Encodes Media filter tag as inline macro.
  */
-function bangpoundmedia_token_to_inline($match) {
+function bangpoundmedia_token_to_markup($match) {
   $tag = str_replace(array('[[', ']]'), '', $match[0]);
 
   $tag_info = drupal_json_decode($tag);
   drupal_alter('bangpoundmedia_wysiwyg_token', $tag_info);
   $tag = drupal_json_encode($tag_info);
 
-  // Using the serialize method on the parser causes
-  // `Fatal error:  Class 'MediaFilterMacro' not found`
-  // because __FUNCTION__ may be called before bootstrap is complete.
-
-  $macro_params = array();
-  $macro_params[] = 'media_filter';
-  $macro_params[] = 'tag='. base64_encode($tag);
-  $output = '[' . implode('|', $macro_params) . ']';
-  return $output;
+  return media_wysiwyg_token_to_markup(array('[['. $tag .']]'));
 }
 
 /**
