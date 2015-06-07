@@ -37,7 +37,7 @@ class MediaFilterMacro extends MacroBase {
   }
 
   public function prepareView(array $context) {
-    module_load_include('inc', 'media', 'includes/media.filter');
+    module_load_include('inc', 'media_wysiwyg', 'includes/media_wysiwyg.filter');
     $this->tag = base64_decode($this->params['tag']);
   }
 
