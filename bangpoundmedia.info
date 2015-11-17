@@ -3,7 +3,6 @@ description = Provides media extensions
 core = 7.x
 php = 5.2.4
 package = !&#
-dependencies[] = composer_manager
 dependencies[] = image_resize_filter
 dependencies[] = inline
 dependencies[] = media
